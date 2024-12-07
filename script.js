@@ -38,3 +38,16 @@ document.getElementById('craftButton').addEventListener('click', () => {
     document.querySelectorAll('.item').forEach(item => item.style.backgroundColor = '');
     selectedItems = [];
 });
+
+// シーンを切り替える関数
+function changeScene(sceneId) {
+    // すべてのシーンを非表示にする
+    const scenes = document.querySelectorAll('.scene');
+    scenes.forEach(scene => {
+        scene.classList.remove('active');
+    });
+
+    // 指定されたシーンを表示する
+    const sceneToShow = document.getElementById(sceneId);
+    sceneToShow.classList.add('active');
+}
