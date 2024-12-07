@@ -12,7 +12,8 @@ let inventory = {
 // クラフトできるアイテムの設定（必要資源）
 const craftingItems = {
     '木の剣': { '木材': 2, '石': 1 },
-    '石のツルハシ': { '木材': 1, '石': 3 }
+    '石のツルハシ': { '木材': 1, '石': 3 },
+    '石': { '落ちている石': 2 }
 };
 
 // 資源を集める
@@ -39,7 +40,7 @@ function updateInventory() {
     // 在庫の内容を表示
     for (const resource in inventory) {
         const resourceDiv = document.createElement('div');
-        resourceDiv.textContent = `${resource}: ${inventory[resource]} 個`;
+        resourceDiv.textContent = `${resource}: ${inventory[resource]} ミリスタック`;
         inventoryDiv.appendChild(resourceDiv);
     }
     console.log('現在の在庫:', inventory);  // 在庫内容を確認するためにログを追加
