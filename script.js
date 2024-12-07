@@ -39,12 +39,6 @@ document.getElementById('craftButton').addEventListener('click', () => {
     selectedItems = [];
 });
 
-
-    // 選択をリセット
-    document.querySelectorAll('.item').forEach(item => item.style.backgroundColor = '');
-    selectedItems = [];
-});
-
 // シーンを切り替える関数
 function changeScene(sceneId) {
     // すべてのシーンを非表示にする
