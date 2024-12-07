@@ -1,46 +1,75 @@
-// レシピデータ
-const recipes = [
-    { item1: "木材", item2: "石", result: "斧 🪓" },
-    { item1: "種", item2: "水", result: "作物 🌾" }
-];
+// 資源の在庫
+let inventory = {
+    '木材': 0,
+    '石': 0,
+    '水': 0
+};
 
-let selectedItems = [];
-let craftedItem = "";  // 作成したアイテムを格納する変数
+// クラフトできるアイテムの設定（必要資源）
+const craftingItems = {
+    '木の剣': { '木材': 2, '石': 1 },
+    '石のツルハシ': { '木材': 1, '石': 3 }
+};
 
-// アイテムを選択するイベント
-document.querySelectorAll('.item').forEach(item => {
-    item.addEventListener('click', () => {
-        if (selectedItems.length < 2) {
-            selectedItems.push(item.dataset.item);
-            item.style.backgroundColor = '#d0f0c0'; // 選択時の色
-        }
+// 資源を集める
+document.querySelectorAll('.resource').forEach(resource => {
+    resource.addEventListener('click', () => {
+        const resourceName = resource.dataset.resource;
+        inventory[resourceName]++;
+        updateInventory();
     });
 });
 
-// クラフトボタンの処理
-document.getElementById('craftButton').addEventListener('click', () => {
-    const resultDiv = document.getElementById('result');
-    if (selectedItems.length === 2) {
-        const recipe = recipes.find(r =>
-            (r.item1 === selectedItems[0] && r.item2 === selectedItems[1]) ||
-            (r.item1 === selectedItems[1] && r.item2 === selectedItems[0])
-        );
+// 在庫管理シーンを更新
+function updateInventory() {
+    const inventoryDiv = document.getElementById('inventory');
+    inventoryDiv.innerHTML = '';  // 在庫の内容をリセット
 
-        if (recipe) {
-            craftedItem = recipe.result;  // 作成したアイテムを保存
-            resultDiv.textContent = `成功！作成したもの: ${recipe.result}`;
-            changeScene('scene2'); // シーン2に切り替え
-        } else {
-            resultDiv.textContent = "クラフト失敗！レシピが見つかりません。";
-        }
-    } else {
-        alert("アイテムを2つ選択してください！");
+    // 在庫の内容を表示
+    for (const resource in inventory) {
+        const resourceDiv = document.createElement('div');
+        resourceDiv.textContent = `${resource}: ${inventory[resource]} 個`;
+        inventoryDiv.appendChild(resourceDiv);
     }
+}
 
-    // 選択をリセット
-    document.querySelectorAll('.item').forEach(item => item.style.backgroundColor = '');
-    selectedItems = [];
-});
+// クラフトシーンを更新
+function updateCraftingOptions() {
+    const craftingDiv = document.getElementById('craftingOptions');
+    craftingDiv.innerHTML = '';  // クラフト選択肢をリセット
+
+    // クラフトできるアイテムを表示
+    for (const item in craftingItems) {
+        const itemRequirements = craftingItems[item];
+        let canCraft = true;
+
+        // 必要資源が足りているかを確認
+        for (const resource in itemRequirements) {
+            if (inventory[resource] < itemRequirements[resource]) {
+                canCraft = false;
+                break;
+            }
+        }
+
+        // アイテムを作れる場合、ボタンを表示
+        if (canCraft) {
+            const craftButton = document.createElement('button');
+            craftButton.textContent = `${item} を作る`;
+            craftButton.addEventListener('click', () => craftItem(item, itemRequirements));
+            craftingDiv.appendChild(craftButton);
+        }
+    }
+}
+
+// アイテムをクラフト
+function craftItem(item, requirements) {
+    // 必要な資源を減らす
+    for (const resource in requirements) {
+        inventory[resource] -= requirements[resource];
+    }
+    updateInventory();  // 在庫を更新
+    alert(`${item} を作成しました！`);
+}
 
 // シーンを切り替える関数
 function changeScene(sceneId) {
@@ -53,9 +82,14 @@ function changeScene(sceneId) {
     // 指定されたシーンを表示する
     const sceneToShow = document.getElementById(sceneId);
     sceneToShow.classList.add('active');
-    
-    // シーン2で作成したアイテムを表示
+
+    // クラフトシーンを表示する場合、クラフトオプションを更新
+    if (sceneId === 'scene3') {
+        updateCraftingOptions();
+    }
+
+    // 在庫管理シーンを表示する場合、在庫を更新
     if (sceneId === 'scene2') {
-        document.getElementById('craftedItem').textContent = `作成したアイテム: ${craftedItem}`;
+        updateInventory();
     }
 }
