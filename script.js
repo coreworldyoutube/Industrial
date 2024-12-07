@@ -19,7 +19,14 @@ const craftingItems = {
 document.querySelectorAll('.resource').forEach(resource => {
     resource.addEventListener('click', () => {
         const resourceName = resource.dataset.resource;
+        
+        // 資源がinventoryに存在しない場合、初期値0で追加する
+        if (!(resourceName in inventory)) {
+            inventory[resourceName] = 0;
+        }
+
         inventory[resourceName]++;
+        console.log(`資源 ${resourceName} が追加されました。現在の在庫: ${inventory[resourceName]}`);
         updateInventory();
     });
 });
@@ -35,6 +42,7 @@ function updateInventory() {
         resourceDiv.textContent = `${resource}: ${inventory[resource]} 個`;
         inventoryDiv.appendChild(resourceDiv);
     }
+    console.log('現在の在庫:', inventory);  // 在庫内容を確認するためにログを追加
 }
 
 // クラフトシーンを更新
