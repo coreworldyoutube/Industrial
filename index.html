@@ -31,10 +31,9 @@
 </head>
 <body>
     <h1>クラフトシステム</h1>
-
-    <!-- クラフトシーン -->
-    <div id="craftScene" class="scene active">
-        <h2>アイテムを選んでクラフトしよう！</h2>
+    
+    <!-- シーン1: アイテム選択とクラフト -->
+    <div id="scene1" class="scene active">
         <div id="inventory">
             <div class="item" data-item="木材">🪵 木材</div>
             <div class="item" data-item="石">🪨 石</div>
@@ -42,16 +41,72 @@
             <div class="item" data-item="水">💧 水</div>
         </div>
         <button id="craftButton">クラフトする</button>
-        <button onclick="changeScene('resultScene')">結果画面へ</button>
+        <div id="craftMessage"></div>
     </div>
 
-    <!-- 結果シーン -->
-    <div id="resultScene" class="scene">
-        <h2>クラフト結果</h2>
-        <div id="result"></div>
-        <button onclick="changeScene('craftScene')">クラフト画面に戻る</button>
+    <!-- シーン2: 作成したアイテム表示 -->
+    <div id="scene2" class="scene">
+        <h2>作成したアイテム</h2>
+        <div id="craftedItem">まだアイテムは作成されていません。</div>
+        <button onclick="changeScene('scene1')">戻る</button>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // 以前作成したアイテムを保存するための配列
+        let craftedItems = [];
+
+        // アイテムを選択するためのイベント
+        document.querySelectorAll('.item').forEach(item => {
+            item.addEventListener('click', () => {
+                item.style.backgroundColor = '#d0f0c0'; // アイテムを選択したときの背景色
+            });
+        });
+
+        // クラフトボタンのイベント
+        document.getElementById('craftButton').addEventListener('click', () => {
+            const selectedItems = [];
+            document.querySelectorAll('.item').forEach(item => {
+                if (item.style.backgroundColor === 'rgb(208, 240, 192)') {
+                    selectedItems.push(item.dataset.item);
+                }
+            });
+
+            if (selectedItems.length === 2) {
+                const craftedItem = selectedItems.join(" と "); // 作成したアイテムを表示
+                craftedItems.push(craftedItem);
+                document.getElementById('craftMessage').textContent = '';
+                changeScene('scene2');  // 結果シーンに切り替え
+                updateCraftedItems(); // 作成したアイテムを更新
+            } else {
+                document.getElementById('craftMessage').textContent = 'アイテムを2つ選んでください。';
+            }
+
+            // アイテム選択をリセット
+            document.querySelectorAll('.item').forEach(item => item.style.backgroundColor = '');
+        });
+
+        // 作成したアイテムをシーン2に表示
+        function updateCraftedItems() {
+            const craftedItemDiv = document.getElementById('craftedItem');
+            if (craftedItems.length === 0) {
+                craftedItemDiv.textContent = 'まだアイテムは作成されていません。';
+            } else {
+                craftedItemDiv.textContent = '作成したアイテム: ' + craftedItems.join(', ');
+            }
+        }
+
+        // シーンを切り替える関数
+        function changeScene(sceneId) {
+            // すべてのシーンを非表示にする
+            const scenes = document.querySelectorAll('.scene');
+            scenes.forEach(scene => {
+                scene.classList.remove('active');
+            });
+
+            // 指定されたシーンを表示する
+            const sceneToShow = document.getElementById(sceneId);
+            sceneToShow.classList.add('active');
+        }
+    </script>
 </body>
 </html>
