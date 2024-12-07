@@ -21,18 +21,37 @@
             margin-top: 20px;
             font-size: 1.5em;
         }
+        .scene {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
     </style>
 </head>
 <body>
     <h1>クラフトシステム</h1>
-    <div id="inventory">
-        <div class="item" data-item="木材">🪵 木材</div>
-        <div class="item" data-item="石">🪨 石</div>
-        <div class="item" data-item="種">🌱 種</div>
-        <div class="item" data-item="水">💧 水</div>
+
+    <!-- クラフトシーン -->
+    <div id="craftScene" class="scene active">
+        <h2>アイテムを選んでクラフトしよう！</h2>
+        <div id="inventory">
+            <div class="item" data-item="木材">🪵 木材</div>
+            <div class="item" data-item="石">🪨 石</div>
+            <div class="item" data-item="種">🌱 種</div>
+            <div class="item" data-item="水">💧 水</div>
+        </div>
+        <button id="craftButton">クラフトする</button>
+        <button onclick="changeScene('resultScene')">結果画面へ</button>
     </div>
-    <button id="craftButton">クラフトする</button>
-    <div id="result"></div>
+
+    <!-- 結果シーン -->
+    <div id="resultScene" class="scene">
+        <h2>クラフト結果</h2>
+        <div id="result"></div>
+        <button onclick="changeScene('craftScene')">クラフト画面に戻る</button>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
