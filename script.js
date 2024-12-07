@@ -1,20 +1,19 @@
-// 資源の在庫
-let inventory = {
-    'オーク': 0,
-    '落ちている石': 0,
-    '水': 0,
-    '白樺': 0,
-    '種': 0,
-    '土': 0,
-    '胸鳥さん。': 0
-};
+// グローバル変数
+let inventory = {};
+let craftingItems = {};
 
-// クラフトできるアイテムの設定（必要資源）
-const craftingItems = {
-    '木の剣': { '木材': 2, '石': 1 },
-    '石のツルハシ': { '木材': 1, '石': 3 },
-    '石': { '落ちている石': 2 }
-};
+// JSONファイルを非同期で読み込む
+function loadData() {
+    fetch('data.json')
+        .then(response => response.json())
+        .then(data => {
+            inventory = data.inventory;   // インベントリデータを設定
+            craftingItems = data.craftingItems;   // クラフトアイテムデータを設定
+            updateInventory();  // インベントリの表示を更新
+            updateCraftingOptions();  // クラフト選択肢の表示を更新
+        })
+        .catch(error => console.error('データ読み込みエラー:', error));
+}
 
 // 資源を集める
 document.querySelectorAll('.resource').forEach(resource => {
@@ -106,3 +105,8 @@ function changeScene(sceneId) {
         updateInventory();
     }
 }
+
+// ページロード時にデータを読み込む
+window.onload = function() {
+    loadData();
+};
