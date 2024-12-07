@@ -5,6 +5,7 @@ const recipes = [
 ];
 
 let selectedItems = [];
+let craftedItem = "";  // 作成したアイテムを格納する変数
 
 // アイテムを選択するイベント
 document.querySelectorAll('.item').forEach(item => {
@@ -26,7 +27,9 @@ document.getElementById('craftButton').addEventListener('click', () => {
         );
 
         if (recipe) {
+            craftedItem = recipe.result;  // 作成したアイテムを保存
             resultDiv.textContent = `成功！作成したもの: ${recipe.result}`;
+            changeScene('scene2'); // シーン2に切り替え
         } else {
             resultDiv.textContent = "クラフト失敗！レシピが見つかりません。";
         }
@@ -50,4 +53,9 @@ function changeScene(sceneId) {
     // 指定されたシーンを表示する
     const sceneToShow = document.getElementById(sceneId);
     sceneToShow.classList.add('active');
+    
+    // シーン2で作成したアイテムを表示
+    if (sceneId === 'scene2') {
+        document.getElementById('craftedItem').textContent = `作成したアイテム: ${craftedItem}`;
+    }
 }
