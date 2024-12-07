@@ -18,13 +18,13 @@ document.querySelectorAll('.item').forEach(item => {
 
 // クラフトボタンの処理
 document.getElementById('craftButton').addEventListener('click', () => {
+    const resultDiv = document.getElementById('result');
     if (selectedItems.length === 2) {
         const recipe = recipes.find(r =>
             (r.item1 === selectedItems[0] && r.item2 === selectedItems[1]) ||
             (r.item1 === selectedItems[1] && r.item2 === selectedItems[0])
         );
 
-        const resultDiv = document.getElementById('result');
         if (recipe) {
             resultDiv.textContent = `成功！作成したもの: ${recipe.result}`;
         } else {
