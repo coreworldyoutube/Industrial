@@ -39,7 +39,7 @@ function updateInventory() {
     // 在庫の内容を表示
     for (const resource in inventory) {
         const resourceDiv = document.createElement('div');
-        resourceDiv.textContent = `${resource}: ${inventory[resource]} ミリスタック`;
+        resourceDiv.textContent = `${resource}: ${inventory[resource]} スタック`;
         inventoryDiv.appendChild(resourceDiv);
     }
     console.log('現在の在庫:', inventory);  // 在庫内容を確認するためにログを追加
