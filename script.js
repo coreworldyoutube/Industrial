@@ -22,7 +22,7 @@ document.querySelectorAll('.resource').forEach(resource => {
         
         // 資源がinventoryに存在しない場合、初期値0で追加する
         if (!(resourceName in inventory)) {
-            inventory[resourceName] = 0;
+            inventory[""] = 0;
         }
 
         // 石ピッケルを持っている場合、採掘量を倍にする
