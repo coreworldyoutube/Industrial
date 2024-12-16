@@ -79,10 +79,19 @@ function craftItem(item, requirements) {
     for (const resource in requirements) {
         inventory[resource] -= requirements[resource];
     }
-    updateInventory();  // 在庫を更新
+
+    // クラフトされたアイテムをインベントリに追加
+    if (!(item in inventory)) {
+        inventory[item] = 0;  // アイテムがインベントリに存在しない場合、初期化
+    }
+    inventory[item]++;
+
+    // インベントリとクラフトオプションを更新
+    updateInventory();
+    updateCraftingOptions();
+
     alert(`${item} を作成しました！`);
 }
-
 // シーンを切り替える関数
 function changeScene(sceneId) {
     // すべてのシーンを非表示にする
