@@ -25,8 +25,14 @@ document.querySelectorAll('.resource').forEach(resource => {
             inventory[resourceName] = 0;
         }
 
-        inventory[resourceName]++;
-        console.log(`資源 ${resourceName} が追加されました。現在の在庫: ${inventory[resourceName]}`);
+        // 石ピッケルを持っている場合、採掘量を倍にする
+        let amountToAdd = 1;
+        if (hasStonePickaxe()) {
+            amountToAdd *= 2;  // 石のツルハシがあれば倍の量を追加
+        }
+
+        inventory[resourceName] += amountToAdd;  // 資源を追加
+        console.log(`${resourceName} が${amountToAdd}個追加されました。現在の在庫: ${inventory[resourceName]}`);
         updateInventory();
     });
 });
