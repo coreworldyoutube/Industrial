@@ -28,14 +28,17 @@ function loadData() {
         .catch(error => console.error('データ読み込みエラー:', error));
 }
 
-// 資源を集める
 document.querySelectorAll('.resource').forEach(resource => {
     resource.addEventListener('click', () => {
         const resourceName = resource.dataset.resource;
         
+        // デバッグ: 資源名とツールが必要かどうか
+        console.log(`採掘する資源: ${resourceName}, 必要ツール: ${data.ConstRequiredTools[resourceName]}`);
+
         // 資源に対応する適正ツールがインベントリにあるか確認
         if (!hasRequiredTool(resourceName)) {
             alert(`${resourceName} を採掘するには適正ツールが必要です！`);
+            console.log(`${resourceName} に適正ツールが必要`);
             return;  // 適正ツールがなければ採掘しない
         }
 
@@ -44,17 +47,20 @@ document.querySelectorAll('.resource').forEach(resource => {
             inventory[resourceName] = 0;
         }
 
-        // 石のツルハシを持っている場合、採掘量を倍にする
+        // デバッグ: どのツールが使われているか、採掘量の確認
         let amountToAdd = 1;
         if (hasStonePickaxe()) {
             amountToAdd *= 2;  // 石のツルハシがあれば倍の量を追加
         }
+        console.log(`${resourceName} を採掘。追加量: ${amountToAdd}`);
 
         inventory[resourceName] += amountToAdd;  // 資源を追加
         console.log(`${resourceName} が${amountToAdd}個追加されました。現在の在庫: ${inventory[resourceName]}`);
+        
         updateInventory();
     });
 });
+
 
 // 在庫管理シーンを更新
 function updateInventory() {
