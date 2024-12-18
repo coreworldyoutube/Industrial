@@ -63,7 +63,7 @@ function updateCraftingOptions() {
 
         // 必要資源が足りているかを確認
         for (const resource in itemRequirements) {
-            if (inventory[resource] < itemRequirements[resource]) {
+            if (inventory['石のピッケル'] < itemRequirements[resource]) {
                 canCraft = false;
                 break;
             }
