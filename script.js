@@ -5,13 +5,15 @@ let craftingItems = {};
 // 資源に必要なツールがインベントリにあるかを確認する関数
 function hasRequiredTool(resource) {
     const requiredTool = data.ConstRequiredTools[resource];  // 資源に対応するツールを取得
+
+    // ツール指定がない場合は常に採掘可能
     if (!requiredTool) {
         return true; // ツールが指定されていない場合、素手でも採掘できる
     }
+
     // ツールが必要ならインベントリにそのツールがあるか確認
     return inventory[requiredTool] > 0;
 }
-
 
 // JSONファイルを非同期で読み込む
 function loadData() {
@@ -115,6 +117,7 @@ function craftItem(item, requirements) {
 
     alert(`${item} を作成しました！`);
 }
+
 // シーンを切り替える関数
 function changeScene(sceneId) {
     // すべてのシーンを非表示にする
