@@ -4,12 +4,14 @@ let craftingItems = {};
 
 // 資源に必要なツールがインベントリにあるかを確認する関数
 function hasRequiredTool(resource) {
-    const requiredTool = data.ConstRequiredTools[resource];
+    const requiredTool = data.ConstRequiredTools[resource];  // 資源に対応するツールを取得
     if (!requiredTool) {
-        return true; // ツールが指定されていない場合、問題なし
+        return true; // ツールが指定されていない場合、素手でも採掘できる
     }
-    return inventory[requiredTool] > 0; // ツールがインベントリにあるか確認
+    // ツールが必要ならインベントリにそのツールがあるか確認
+    return inventory[requiredTool] > 0;
 }
+
 
 // JSONファイルを非同期で読み込む
 function loadData() {
@@ -32,7 +34,7 @@ document.querySelectorAll('.resource').forEach(resource => {
         // 資源に対応する適正ツールがインベントリにあるか確認
         if (!hasRequiredTool(resourceName)) {
             alert(`${resourceName} を採掘するには適正ツールが必要です！`);
-            return; // 適正ツールがなければ採掘しない
+            return;  // 適正ツールがなければ採掘しない
         }
 
         // 資源がinventoryに存在しない場合、初期値0で追加する
@@ -43,15 +45,14 @@ document.querySelectorAll('.resource').forEach(resource => {
         // 石のツルハシを持っている場合、採掘量を倍にする
         let amountToAdd = 1;
         if (hasStonePickaxe()) {
-            amountToAdd *= 2; // 石のツルハシがあれば倍の量を追加
+            amountToAdd *= 2;  // 石のツルハシがあれば倍の量を追加
         }
 
-        inventory[resourceName] += amountToAdd; // 資源を追加
+        inventory[resourceName] += amountToAdd;  // 資源を追加
         console.log(`${resourceName} が${amountToAdd}個追加されました。現在の在庫: ${inventory[resourceName]}`);
         updateInventory();
     });
 });
-
 
 // 在庫管理シーンを更新
 function updateInventory() {
